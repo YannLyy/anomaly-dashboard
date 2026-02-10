@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= botName %> | <%= guild ? guild.name : "Serveur" %></title>
+    <link rel="stylesheet" href="/app.css?v=200" />
+  </head>
+
+  <body class="guildPage">
+    <div class="shell">
+      <div class="container fadeUp">
+        <div class="card appCard">
+
+          <!-- TOP BAR -->
+          <div class="topbar panel">
+            <div class="topbarLeft">
+              <img class="brandLogo" src="/logo.svg" alt="Logo <%= botName %>" />
+              <div class="topbarTxt">
+                <div class="topTitle"><%= botName %>‎ ‎ ‎ ///‎ ‎ ‎ <%= guild ? guild.name : "Serveur" %></div>
+                <div class="topSub">Sauvegarde instantanée !</div>
+              </div>
+            </div>
+
+            <a class="btn btnGhost" href="/guilds">
+              <span aria-hidden="true">←</span>
+              <span>Retour</span>
+            </a>
+          </div>
+<!-- PROFIL (comme /guilds) -->
+<div class="profile">
+  <% if (me && me.banner) { %>
+    <div class="profileBanner">
+      <img src="<%= me.banner %>" alt="Bannière" />
+    </div>
+  <% } %>
+
+  <div class="profileBody">
+    <% if (me) { %>
+      <img class="meAvatar" src="<%= me.avatar %>" alt="Avatar" />
+      <div class="meName"><%= me.global_name ? me.global_name : me.username %></div>
+      <div class="meUser">@<%= me.username %></div>
+      <div class="meId"><%= me.id %></div>
+    <% } %>
+  </div>
+</div>
+
+          <div class="content">
+
+            <!-- PREFIX -->
+            <section class="panel">
+              <div class="panelHead">
+                <h2>Préfix</h2>
+                <span id="globalStatus" class="status"></span>
+              </div>
+
+              <div class="prefixRow">
+                <input id="prefixInput" value="<%= (cfg && cfg.prefix) ? cfg.prefix : '+' %>" maxlength="5" />
+                <button id="savePrefix" class="btn">
+                  <span aria-hidden="true">💾</span>
+                  <span>Enregistrer</span>
+                </button>
+                <span id="prefixStatus" class="status"></span>
+              </div>
+            </section>
+
+            <!-- MODULES / COMMANDES -->
+            <section class="panel">
+              <div class="panelHead">
+                <h2>Modules & commandes</h2>
+                <div class="hint">Clique sur un module pour afficher ses commandes</div>
+              </div>
+
+              <div class="moduleGrid">
+                <% (categories || []).forEach(cat => { %>
+                  <details class="moduleCard">
+                    <summary class="moduleHead">
+                      <div class="moduleLeft">
+                        <div class="moduleTitle"><%= cat.title %></div>
+                        <div class="moduleDesc"><%= cat.description %></div>
+                      </div>
+
+                      <% if (cat.module) { %>
+                        <% const enabledMod = !(cfg && cfg.modules && cfg.modules[cat.module] && cfg.modules[cat.module].enabled === false); %>
+                        <div class="moduleRight">
+                          <span class="miniLabel">Module</span>
+
+                          <!-- ✅ NOUVEAU CHECKBOX -->
+                          <label class="checkbox-wrapper">
+                            <input
+                              type="checkbox"
+                              class="toggleModule"
+                              data-module="<%= cat.module %>"
+                              <%= enabledMod ? "checked" : "" %>
+                            />
+                            <div class="checkmark" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path
+                                  d="M20 6L9 17L4 12"
+                                  stroke-width="3"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                ></path>
+                              </svg>
+                            </div>
+                          </label>
+                        </div>
+                      <% } %>
+                    </summary>
+
+<div class="moduleBody">
+  <div class="commandGrid">
+    <% (cat.commands || []).forEach(cmd => { 
+      const enabledCmd = !cfg.commands?.[cmd.fullName] || cfg.commands[cmd.fullName].enabled !== false;
+    %>
+
+      <div class="commandCard">
+        <div class="commandInfo">
+          <div class="commandName"><%= cmd.label %></div>
+          <div class="commandFull"><%= cmd.fullName %></div>
+        </div>
+
+        <label class="checkbox-wrapper">
+          <input
+            type="checkbox"
+            class="toggleCommand"
+            data-command="<%= cmd.fullName %>"
+            <%= enabledCmd ? "checked" : "" %>
+          />
+          <div class="checkmark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                d="M20 6L9 17L4 12"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </div>
+        </label>
+      </div>
+
+    <% }) %>
+  </div>
+</div>
+</details>
+<% }) %>
+</div>
+
+
+
+            </section>
+
+            <footer class="foot">
+              <div class="footLeft">
+                <div class="footTitle">> <%= botName %></div>
+                <div class="footSub"></div>
+              </div>
+              <div class="footRight">© 2026</div>
+            </footer>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const guildId = "<%= guildId %>";
+
+      const globalStatus = document.getElementById("globalStatus");
+      let t;
+      function flash(msg){
+        if(!globalStatus) return;
+        globalStatus.textContent = msg;
+        clearTimeout(t);
+        t = setTimeout(()=> globalStatus.textContent="", 900);
+      }
+
+      async function postJSON(url, body){
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        if(!res.ok) throw new Error(await res.text());
+        return res.json();
+      }
+
+      // Prefix
+      const prefixInput = document.getElementById("prefixInput");
+      const prefixStatus = document.getElementById("prefixStatus");
+
+      document.getElementById("savePrefix").addEventListener("click", async () => {
+        const v = (prefixInput.value || "").trim() || "+";
+        prefixStatus.textContent = "Sauvegarde...";
+        try{
+          await postJSON(`/api/guild/${guildId}/prefix`, { prefix: v });
+          prefixStatus.textContent = "✅ Enregistré";
+          flash("✅ Enregistré");
+          setTimeout(()=> prefixStatus.textContent="", 1200);
+        }catch(e){
+          prefixStatus.textContent = "❌ Erreur";
+          flash("❌ Erreur");
+        }
+      });
+
+      // Toggle commands
+      document.querySelectorAll(".toggleCommand").forEach(el => {
+        el.addEventListener("change", async () => {
+          const fullName = el.dataset.command;
+          const enabled = el.checked;
+          try{
+            await postJSON(`/api/guild/${guildId}/command`, { fullName, enabled });
+            flash("✅ Enregistré");
+          }catch(e){
+            el.checked = !enabled;
+            flash("❌ Erreur");
+          }
+        });
+      });
+
+      // Toggle modules
+      document.querySelectorAll(".toggleModule").forEach(el => {
+        el.addEventListener("change", async () => {
+          const module = el.dataset.module;
+          const enabled = el.checked;
+          try{
+            await postJSON(`/api/guild/${guildId}/module`, { module, enabled });
+            flash("✅ Enregistré");
+          }catch(e){
+            el.checked = !enabled;
+            flash("❌ Erreur");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

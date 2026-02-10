@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= botName %> | Serveurs</title>
+    <link rel="stylesheet" href="/app.css?v=10" />
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="container fadeUp">
+        <div class="card">
+
+          <!-- HEADER -->
+          <div class="brand brandPad">
+            <div class="logo">
+              <img class="brandLogo" src="/logo.svg" />
+              <div>
+                <div class="title"><%= botName %> Dashboard</div>
+                <div class="subtitle">Choisis un serveur pour configurer le bot</div>
+              </div>
+            </div>
+
+            <a class="btn logoutBtn" href="/logout">Logout</a>
+          </div>
+
+          <!-- PROFILE -->
+          <div class="profile">
+            <% if (me?.banner) { %>
+              <div class="profileBanner">
+                <img src="<%= me.banner %>" />
+              </div>
+            <% } %>
+
+            <div class="profileBody">
+              <img class="meAvatar" src="<%= me.avatar %>" />
+              <div class="meName"><%= me.global_name || me.username %></div>
+              <div class="meUser">@<%= me.username %></div>
+              <div class="meId"><%= me.id %></div>
+            </div>
+          </div>
+
+          <!-- SERVERS -->
+          <div class="section">
+            <div class="sectionTitle">
+              <h2>Serveurs</h2>
+            </div>
+
+            <div class="servers">
+<% guilds.forEach(g => { %>
+
+  <% 
+    const botPresent = !!g.botPresent;
+    const canInvite = !!g.canInvite;
+
+    // ❌ caché : bot absent ET pas la permission d'inviter
+    if (!botPresent && !canInvite) return;
+  %>
+
+  <% if (botPresent) { %>
+    <!-- ✅ BOT PRÉSENT -->
+    <a class="serverCard" href="/guild/<%= g.id %>">
+      <div class="serverInner">
+        <div class="guildIcon">
+          <% if (g.icon) { %>
+            <img src="<%= g.icon %>" alt="Icône" />
+          <% } else { %>
+            <span><%= (g.name || "?").slice(0,1).toUpperCase() %></span>
+          <% } %>
+        </div>
+
+        <div>
+          <div class="guildName"><%= g.name %></div>
+          <div class="guildMeta"><%= g.id %></div>
+        </div>
+      </div>
+    </a>
+
+  <% } else { %>
+    <!-- ➕ BOT ABSENT MAIS INVITABLE : grisé + bouton -->
+    <div class="serverCard serverDisabled">
+      <div class="serverInner">
+        <div class="guildIcon">
+          <% if (g.icon) { %>
+            <img src="<%= g.icon %>" alt="Icône" />
+          <% } else { %>
+            <span><%= (g.name || "?").slice(0,1).toUpperCase() %></span>
+          <% } %>
+        </div>
+
+        <div>
+          <div class="guildName"><%= g.name %></div>
+          <div class="guildMeta"><%= g.id %></div>
+        </div>
+      </div>
+
+      <div class="inviteOverlay">
+        <a
+          class="btn inviteBtn"
+          href="https://discord.com/oauth2/authorize?client_id=967511408159895633&permissions=8&integration_type=0&scope=bot"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Ajouter Anomaly
+        </a>
+      </div>
+    </div>
+  <% } %>
+
+<% }) %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

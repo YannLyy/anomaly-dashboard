@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= botName %> | Connexion</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="container centerLogin">
+        <div class="card loginCard fadeUp">
+          <div class="loginTop">
+            <img class="brandLogo" src="/logo.svg" alt="Logo <%= botName %>" />
+            <div>
+              <div class="title"><%= botName %> | Dashboard</div>
+            </div>
+          </div>
+
+          <div class="loginHero">
+            <div>
+              <h1>Connexion avec Discord</h1>
+              <p>
+                Authentification rapide via Discord.<br>On récupère uniquement ton avatar, pseudo et ID.
+              </p>
+            </div>
+
+            <div class="cta">
+              <a class="btn" href="<%= authUrl %>">
+                <span aria-hidden="true">🔐</span>
+                <span>Se connecter</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="hint">
+            › Notre discord : <code>https://discord.gg/5FRdwbnSAM</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

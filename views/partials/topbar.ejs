@@ -1,0 +1,15 @@
+<div class="topbar">
+  <div class="me">
+    <% if (me) { %>
+      <img class="avatar" src="<%= me.avatar %>" alt="avatar" />
+      <div class="meta">
+        <div class="name"><%= me.global_name ? me.global_name : me.username %></div>
+        <div class="sub">@<%= me.username %> • <%= me.id %></div>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="right">
+    <a class="link" href="/logout">Logout</a>
+  </div>
+</div>

@@ -1,0 +1,895 @@
+:root{
+  --bg0:#070912;
+  --bg1:#0b1022;
+  --card: rgba(255,255,255,.06);
+  --card2: rgba(255,255,255,.09);
+  --stroke: rgba(255,255,255,.10);
+  --stroke2: rgba(255,255,255,.14);
+  --text:#e9ecf5;
+  --muted: rgba(233,236,245,.72);
+  --muted2: rgba(233,236,245,.56);
+  --shadow: 0 18px 50px rgba(0,0,0,.45);
+  --radius: 18px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color:var(--text);
+  background: var(--bg0);
+}
+
+/* subtle grain */
+body:before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+a{ color:inherit; }
+
+/* basic reset for links used as cards */
+a{ text-decoration:none; }
+
+.shell{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 42px 18px;
+}
+
+
+.container{
+  width: min(1380px, 96vw);  /* plus large */
+}
+
+
+.centerLogin{
+  display:flex;
+  justify-content:center;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-top: 14px;
+  margin-left: 14px;
+  margin-bottom: 16px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* logo file: src/web/public/logo.svg */
+.brandLogo{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display:block;
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+
+.title{
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: .2px;
+}
+
+.subtitle{
+  margin-top:3px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.06);
+  text-decoration:none;
+  color:var(--text);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+  will-change: transform;
+}
+.btn:hover{ transform: translateY(-2px); border-color: var(--stroke2); background: rgba(255,255,255,.09); }
+.btn:active{ transform: translateY(0px) scale(.99); }
+
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+  border:1px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.loginCard{
+  padding: 26px;
+  max-width: 680px;
+}
+
+.loginTop{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin-bottom: 18px;
+  text-align:left;
+}
+
+.hint{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.09);
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.hint code{
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+  color: rgba(233,236,245,.86);
+}
+
+.loginHero{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 18px;
+  align-items:center;
+}
+
+.loginHero h1{ margin:0; font-size: 30px; letter-spacing:.2px; }
+.loginHero p{ margin:10px 0 0; color: var(--muted); line-height:1.5; }
+
+.cta{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.grid{
+  display:grid;
+  gap: 14px;
+}
+
+/* profile */
+.profile{
+  position:relative;
+  overflow:hidden;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.profileBanner{
+  height: 160px;
+  background: rgba(255,255,255,.05);
+  border-radius: 55px;   /* ✅ coins arrondis */
+  overflow: hidden;      /* ✅ l'image est coupée selon le radius */
+} 
+
+.profileBanner img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit: cover;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.profileBody{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding: 22px 18px 18px;
+}
+
+.profileBanner + .profileBody{
+  margin-top: -60px; /* lift avatar into banner */
+}
+
+.meAvatar{
+  width: 110px;
+  height: 110px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 22px 55px rgba(0,0,0,.55);
+  background: rgba(0,0,0,.25);
+}
+
+.meName{ margin-top: 14px; font-size: 28px; font-weight: 950; letter-spacing: .2px; }
+.meUser{ margin-top: 6px; color: var(--muted); font-size: 14px; }
+.meId{ margin-top: 8px; color: var(--muted2); font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+.section{
+  padding: 0 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* ✅ distance constante entre "serveurs" et footer */
+}
+
+.sectionTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+
+.sectionTitle h2{
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+
+.servers{
+  display:grid;
+  grid-template-columns: repeat( auto-fill, minmax(190px, 1fr) );
+  gap: 12px;
+  margin: 0; /* évite des marges random */
+}
+
+.serverCard{
+  position:relative;
+  overflow:hidden;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.05);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+  transform: translateY(0);
+  will-change: transform;
+  text-decoration:none;
+}
+
+.serverCard:before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background: radial-gradient(380px 200px at 30% 20%, rgba(255,255,255,.10), transparent 60%);
+  opacity:0;
+  transition: opacity .18s ease;
+}
+
+
+.serverCard:hover{
+  transform: translateY(-5px);
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 18px 55px rgba(0,0,0,.55);
+}
+.serverCard:hover:before{ opacity:1; }
+
+.serverInner{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.guildIcon{
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  display:grid;
+  place-items:center;
+  font-weight: 900;
+  color: rgba(255,255,255,.85);
+}
+
+.guildIcon img{
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display:block;
+  object-fit: cover;
+}
+
+.footer{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  overflow:hidden;
+
+  width: 100%;       /* ✅ même largeur que la grille */
+  margin: 0;         /* ✅ plus de margin externe qui décale */
+}
+
+.footerInner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.footerTitle{ font-weight: 850; font-size: 13px; }
+.footerSub{ margin-top: 2px; font-size: 12px; color: var(--muted2); }
+.footerRight{ font-size: 12px; color: var(--muted2); }
+
+.footerBar{
+  height: 3px;
+  width: 100%;
+  background: rgba(255,255,255,.10);
+}
+
+
+
+.guildName{
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.guildMeta{
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--muted2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.empty{
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px dashed rgba(255,255,255,.14);
+  color: var(--muted);
+  background: rgba(255,255,255,.03);
+}
+
+.logoutBtn{
+  margin-right: 14px; /* augmente = plus à gauche */
+}
+
+/* Animated checkbox (SVG) EXACT */
+.animCheckbox{
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.animCheckbox input{
+  display: none;
+}
+
+.animCheckbox svg{
+  overflow: visible;
+}
+
+.animCheckbox .path{
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.animCheckbox input:checked ~ svg .path{
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+
+/* ===== Guild page readability ===== */
+.guildPage .title{ font-size: 24px; }
+.guildPage .subtitle{ font-size: 14px; }
+
+.guildPage .sectionTitle h2{
+  font-size: 15px;
+  letter-spacing: .35px;
+}
+
+.guildPage .card{
+  border-radius: 20px;
+}
+
+.guildPage .section{
+  padding: 18px 22px 22px;
+  gap: 18px;
+}
+
+.guildPage .btn{
+  padding: 12px 16px;
+  border-radius: 16px;
+}
+
+.guildPage input#prefixInput{
+  width: 140px !important;
+  padding: 12px 14px !important;
+  border-radius: 16px !important;
+  font-size: 14px !important;
+}
+
+/* Command rows = plus haut + texte plus grand */
+.guildPage .cmdRow{
+  padding: 14px 16px !important;
+  border-radius: 16px !important;
+}
+
+.guildPage .cmdLabel{
+  font-size: 14px !important;
+}
+
+.guildPage .cmdMeta{
+  font-size: 12px !important;
+}
+
+/* details (catégories) plus lisibles */
+.guildPage details.card{
+  padding: 18px !important;
+}
+
+.guildPage details summary{
+  padding-bottom: 8px;
+}
+
+/* ===== GUILD PAGE: agrandir TOUT ===== */
+ /* presque plein écran */
+/* ===== Guild page polish (cards propres) ===== */
+.guildPage .container{ width: min(1500px, 94vw); }
+
+.guildPage .appCard{ padding: 22px; }
+
+.guildPage .content{
+  padding: 22px;
+  display:flex;
+  flex-direction:column;
+  gap: 18px;
+}
+
+/* Panels */
+.guildPage .panel{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.035);
+  border-radius: 22px;
+  padding: 20px;
+}
+
+.guildPage .panelHead{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 14px;
+}
+
+.guildPage .panelHead h2{
+  margin:0;
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 900;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+}
+
+.guildPage .hint{
+  font-size: 13px;
+  color: var(--muted2);
+}
+
+.guildPage .status{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Prefix row */
+.guildPage .prefixRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.guildPage #prefixInput{
+  width: 170px;
+  font-size: 15px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.25);
+  color: var(--text);
+  outline: none;
+}
+
+/* Modules grid */
+.guildPage .moduleGrid{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+/* Each module = rectangle propre */
+.guildPage .moduleCard{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius: 22px;
+  overflow:hidden;
+}
+
+.guildPage .moduleHead{
+  cursor:pointer;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+  padding: 18px 18px;
+}
+
+.guildPage .moduleHead::-webkit-details-marker{ display:none; }
+
+.guildPage .moduleTitle{
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.guildPage .moduleDesc{
+  margin-top:4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.guildPage .moduleRight{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.guildPage .miniLabel{
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Module body (commands container) */
+.guildPage .moduleBody{
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 14px 14px 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.topbar.panel{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.035);
+  border-radius: 22px;
+  padding: 18px 18px;
+  margin-bottom: 18px; /* espace avec Préfixe */
+}
+
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between; /* ✅ bouton à droite */
+}
+
+/* Command rows = rectangles */
+.guildPage .cmdRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 16px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+
+.guildPage .cmdName{
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.guildPage .cmdMeta{
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--muted2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.guildPage .cmdToggle{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+/* Footer */
+.guildPage .foot{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 22px;
+  padding: 16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+/* ===== New checkbox style (ton code) ===== */
+.checkbox-wrapper {
+  --checkbox-size: 26px;
+
+  /* ✅ adapté au thème (bleu/white) */
+  --checkbox-color: rgba(0, 215, 255, 0.95);
+  --checkbox-shadow: rgba(0, 215, 255, 0.25);
+  --checkbox-border: rgba(255, 255, 255, 0.45);
+
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.checkbox-wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-wrapper .checkmark {
+  position: relative;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border: 2px solid var(--checkbox-border);
+  border-radius: 10px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px var(--checkbox-shadow);
+  overflow: hidden;
+}
+
+.checkbox-wrapper .checkmark::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--checkbox-color), rgba(124,92,255,.95));
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: scale(0) rotate(-45deg);
+}
+
+.checkbox-wrapper input:checked ~ .checkmark::before {
+  opacity: 1;
+  transform: scale(1) rotate(0);
+}
+
+.checkbox-wrapper .checkmark svg {
+  width: 0;
+  height: 0;
+  color: rgba(10,10,12,.9);
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+}
+
+.checkbox-wrapper input:checked ~ .checkmark svg {
+  width: 18px;
+  height: 18px;
+  transform: rotate(360deg);
+}
+
+.checkbox-wrapper:hover .checkmark {
+  border-color: var(--checkbox-color);
+  transform: scale(1.08);
+  box-shadow:
+    0 0 20px var(--checkbox-shadow),
+    0 0 40px var(--checkbox-shadow),
+    inset 0 0 10px var(--checkbox-shadow);
+}
+
+.checkbox-wrapper input:checked ~ .checkmark {
+  animation: pulse 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px var(--checkbox-shadow); }
+  50% {
+    transform: scale(0.92);
+    box-shadow: 0 0 30px var(--checkbox-shadow), 0 0 50px var(--checkbox-shadow);
+  }
+  100% { transform: scale(1); box-shadow: 0 0 20px var(--checkbox-shadow); }
+}
+
+/* ===== Command grid (4 per row) ===== */
+.commandGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.commandCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.035);
+
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.commandCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+}
+
+.commandInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.commandName {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.commandFull {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+/* responsive */
+@media (max-width: 1200px) {
+  .commandGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .commandGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .commandGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.commandActions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.cmdSettingsBtn{
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  cursor: pointer;
+  display:grid;
+  place-items:center;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.cmdSettingsBtn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.22);
+}
+
+.commandGrid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 1100px){
+  .commandGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px){
+  .commandGrid{ grid-template-columns: 1fr; }
+}
+
+/* empêche les cards de déborder dans une grid */
+.commandGrid,
+.commandCard,
+.commandInfo,
+.commandName,
+.commandFull{
+  min-width: 0;
+}
+
+.commandCard{
+  width: 100%;
+}
+
+/* si tu as un flex dans la card */
+.commandCard{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* assure que la partie texte peut rétrécir */
+.commandInfo{
+  flex: 1;
+  min-width: 0;
+}
+
+/* évite que le texte fasse exploser la box */
+.commandName,
+.commandFull{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.serverDisabled{
+  position: relative;
+  opacity: .45;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+.serverDisabled:hover{
+  transform: none;
+  box-shadow: none;
+}
+.inviteOverlay{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background: rgba(0,0,0,.45);
+  border-radius: inherit;
+}
+.inviteBtn{
+  font-weight: 800;
+  padding: 12px 18px;
+}
+.inviteBtn:hover{
+  background: #4752C4;
+}
+
+
+@keyframes fadeUp{
+  from{ opacity:0; transform: translateY(10px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+.fadeUp{ animation: fadeUp .5s ease both; }
+
+@media (max-width: 780px){
+  .loginHero{ grid-template-columns: 1fr; }
+  .cta{ justify-content:flex-start; }
+  .meAvatar{ width: 96px; height: 96px; border-radius: 26px; }
+  .profileBanner{ height: 140px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
